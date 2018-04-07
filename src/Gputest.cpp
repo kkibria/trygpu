@@ -33,13 +33,6 @@ class DescriptorSetLayouts {
 
     void associate_buffers () {
 
-		VkCommandPoolCreateInfo commandPoolCreateInfo = {
-			VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO,
-			0,
-			0,
-			queueFamilyIndex
-		};
-
 		VkDescriptorPoolSize descriptorPoolSize = {
 			VK_DESCRIPTOR_TYPE_STORAGE_BUFFER,
 			2
@@ -112,9 +105,80 @@ class DescriptorSetLayouts {
     }
 };
 
-
-
 class CommandBuffer {
+    Device &device;
+    VkCommandPool commandPool;
+    VkCommandBuffer* pCommandBuffer;  // This should be an array
+    uint32_t commandBufferCount;
+
+    const VkCommandBuffer& operator[](uint32_t idx) const {
+        if (idx < commandBufferCount) {
+            return pCommandBuffer[idx];
+        }
+        throw "out of bound";
+    }
+    const uint32_t size() {return commandBufferCount;}
+
+    // count should be greater than 0
+    CommandBuffer(Device &device, uint32_t commandBufferCount, uint32_t queueFamilyIndex) 
+        : device(device) {
+
+        if (commandBufferCount == 0) {
+            throw "size 0?";
+        }
+
+        pCommandBuffer = new VkCommandBuffer[commandBufferCount];
+        this->commandBufferCount = commandBufferCount;
+        create(queueFamilyIndex);
+    }
+
+    ~CommandBuffer() {
+        delete[] pCommandBuffer;
+    }
+
+    void create(uint32_t queueFamilyIndex) {
+		VkCommandPoolCreateInfo commandPoolCreateInfo = {
+			VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO,
+			0,
+			0,
+			queueFamilyIndex
+		};
+
+
+		BAIL_ON_BAD_RESULT(vkCreateCommandPool(device, &commandPoolCreateInfo, 0, &commandPool));
+
+		VkCommandBufferAllocateInfo commandBufferAllocateInfo = {
+			VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
+			0,
+			commandPool,
+			VK_COMMAND_BUFFER_LEVEL_PRIMARY,
+			commandBufferCount
+		};
+		
+		BAIL_ON_BAD_RESULT(vkAllocateCommandBuffers(device, &commandBufferAllocateInfo, pCommandBuffer));
+
+        // we probably should free up rest of the memeory from the pool
+    }
+};
+
+
+class CommandBufferBind {
+
+    CommandBufferBind() {
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+
 
 
 
