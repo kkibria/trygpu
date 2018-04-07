@@ -109,7 +109,16 @@ class DescriptorSetLayouts {
 
 		vkUpdateDescriptorSets(device, 2, writeDescriptorSet, 0, 0);
 
-	    } 
+    }
+};
 
 
-}
+
+class CommandBuffer {
+
+
+
+
+
+
+};
