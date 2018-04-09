@@ -157,7 +157,11 @@ class CommandBuffer {
 		
 		BAIL_ON_BAD_RESULT(vkAllocateCommandBuffers(device, &commandBufferAllocateInfo, pCommandBuffer));
 
-        // we probably should free up rest of the memeory from the pool
+
+	    
+	    
+	    
+	    // we probably should free up rest of the memeory from the pool
     }
 };
 
@@ -218,3 +222,59 @@ class CommandBufferBind {
 
 
 };
+
+
+
+
+
+
+
+
+
+
+
+class Queue {
+	
+	
+	
+	Queue() {
+
+		  VkQueue queue;
+
+    vkGetDeviceQueue(device, queueFamilyIndex, 0, &queue);
+
+
+
+    VkSubmitInfo submitInfo = {
+
+      VK_STRUCTURE_TYPE_SUBMIT_INFO,
+
+      0,
+
+      0,
+
+      0,
+
+      0,
+
+      1,
+
+      &commandBuffer,
+
+      0,
+
+      0
+
+    };
+
+
+
+    BAIL_ON_BAD_RESULT(vkQueueSubmit(queue, 1, &submitInfo, 0));
+
+
+
+    BAIL_ON_BAD_RESULT(vkQueueWaitIdle(queue));
+		
+		
+		
+	}
