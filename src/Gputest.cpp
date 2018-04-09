@@ -166,7 +166,39 @@ class CommandBufferBind {
 
     CommandBufferBind() {
 
+    VkCommandBufferBeginInfo commandBufferBeginInfo = {
 
+      VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO,
+
+      0,
+
+      VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT,
+
+      0
+
+    };
+
+
+
+    BAIL_ON_BAD_RESULT(vkBeginCommandBuffer(commandBuffer, &commandBufferBeginInfo));
+
+
+
+    vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_COMPUTE, pipeline);
+
+
+
+    vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_COMPUTE,
+
+      pipelineLayout, 0, 1, &descriptorSet, 0, 0);
+
+
+
+    vkCmdDispatch(commandBuffer, bufferSize / sizeof(int32_t), 1, 1);
+
+
+
+    BAIL_ON_BAD_RESULT(vkEndCommandBuffer(commandBuffer));
 
 
 
