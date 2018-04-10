@@ -280,76 +280,60 @@ VkResult vkEndCommandBuffer(
     VkCommandBuffer                             commandBuffer);
 	    
     BAIL_ON_BAD_RESULT(vkEndCommandBuffer(commandBuffer));
-
-
-
-
-
     }
-
-
-
-
-
-
-
-
-
-
-
-
 };
 
-
-
-
-
-
-
-
-
-
-
 class Queue {
-	
-	
-	
-	Queue() {
+	VkQueue queue;
 
-		  VkQueue queue;
+	Queue() {
+void vkGetDeviceQueue(
+    VkDevice                                    device,
+    uint32_t                                    queueFamilyIndex,
+    uint32_t                                    queueIndex,
+    VkQueue*                                    pQueue);
 
     vkGetDeviceQueue(device, queueFamilyIndex, 0, &queue);
 
-
-
+/////////////////////////////
+typedef struct VkSubmitInfo {
+    VkStructureType                sType;
+    const void*                    pNext;
+    uint32_t                       waitSemaphoreCount;
+    const VkSemaphore*             pWaitSemaphores;
+    const VkPipelineStageFlags*    pWaitDstStageMask;
+    uint32_t                       commandBufferCount;
+    const VkCommandBuffer*         pCommandBuffers;
+    uint32_t                       signalSemaphoreCount;
+    const VkSemaphore*             pSignalSemaphores;
+} VkSubmitInfo;
+		
+VkResult vkQueueSubmit(
+    VkQueue                                     queue,
+    uint32_t                                    submitCount,
+    const VkSubmitInfo*                         pSubmits,
+    VkFence                                     fence);		
+		
     VkSubmitInfo submitInfo = {
-
       VK_STRUCTURE_TYPE_SUBMIT_INFO,
-
       0,
-
       0,
-
       0,
-
       0,
-
       1,
-
       &commandBuffer,
-
       0,
-
       0
-
     };
 
+	BAIL_ON_BAD_RESULT(vkQueueSubmit(queue, 1, &submitInfo, 0));
 
+//////////////////////////////////////////
 
-    BAIL_ON_BAD_RESULT(vkQueueSubmit(queue, 1, &submitInfo, 0));
-
-
-
+VkResult vkQueueWaitIdle(
+    VkQueue                                     queue);		
+		
+		
     BAIL_ON_BAD_RESULT(vkQueueWaitIdle(queue));
 		
 		
