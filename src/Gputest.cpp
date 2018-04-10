@@ -170,6 +170,37 @@ class CommandBufferBind {
 
     CommandBufferBind() {
 
+	    
+	    
+typedef struct VkCommandBufferBeginInfo {
+	VkStructureType                          sType;
+	const void*                              pNext;
+	VkCommandBufferUsageFlags                flags;
+	const VkCommandBufferInheritanceInfo*    pInheritanceInfo; 
+} VkCommandBufferBeginInfo;
+	    
+typedef enum VkCommandBufferUsageFlagBits {
+    VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT = 0x00000001,
+    VK_COMMAND_BUFFER_USAGE_RENDER_PASS_CONTINUE_BIT = 0x00000002,
+    VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT = 0x00000004,
+} VkCommandBufferUsageFlagBits;
+	    
+typedef struct VkCommandBufferInheritanceInfo {
+    VkStructureType                  sType;
+    const void*                      pNext;
+    VkRenderPass                     renderPass;
+    uint32_t                         subpass;
+    VkFramebuffer                    framebuffer;
+    VkBool32                         occlusionQueryEnable;
+    VkQueryControlFlags              queryFlags;
+    VkQueryPipelineStatisticFlags    pipelineStatistics;
+} VkCommandBufferInheritanceInfo;	    
+
+VkResult vkBeginCommandBuffer(
+    VkCommandBuffer                             commandBuffer,
+    const VkCommandBufferBeginInfo*             pBeginInfo);	    
+	    
+	    
     VkCommandBufferBeginInfo commandBufferBeginInfo = {
 
       VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO,
@@ -186,22 +217,68 @@ class CommandBufferBind {
 
     BAIL_ON_BAD_RESULT(vkBeginCommandBuffer(commandBuffer, &commandBufferBeginInfo));
 
-
-
+//////////////////
+typedef enum VkPipelineBindPoint {
+    VK_PIPELINE_BIND_POINT_GRAPHICS = 0,
+    VK_PIPELINE_BIND_POINT_COMPUTE = 1,
+} VkPipelineBindPoint;
+	    
+void vkCmdBindPipeline(
+    VkCommandBuffer                             commandBuffer,
+    VkPipelineBindPoint                         pipelineBindPoint,
+    VkPipeline                                  pipeline);	    
+	    
+	    
+	    
     vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_COMPUTE, pipeline);
 
+//////////////////////////////////////////////////
+	    
+	    
+void vkCmdBindDescriptorSets(
+    VkCommandBuffer                             commandBuffer,
+    VkPipelineBindPoint                         pipelineBindPoint,
+    VkPipelineLayout                            layout,
+    uint32_t                                    firstSet,
+    uint32_t                                    descriptorSetCount,
+    const VkDescriptorSet*                      pDescriptorSets,
+    uint32_t                                    dynamicOffsetCount,
+    const uint32_t*                             pDynamicOffsets);	    
 
-
+	    
+	    
+	    
+	    
     vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_COMPUTE,
 
       pipelineLayout, 0, 1, &descriptorSet, 0, 0);
 
+//////////////////
+void vkCmdPushConstants(
+    VkCommandBuffer                             commandBuffer,
+    VkPipelineLayout                            layout,
+    VkShaderStageFlags                          stageFlags,
+    uint32_t                                    offset,
+    uint32_t                                    size,
+    const void*                                 pValues);	    
 
+	    /////////////////////
+	    
+	    
+void vkCmdDispatch(
+    VkCommandBuffer                             commandBuffer,
+    uint32_t                                    groupCountX,
+    uint32_t                                    groupCountY,
+    uint32_t                                    groupCountZ);	    
+	    
+	    
 
     vkCmdDispatch(commandBuffer, bufferSize / sizeof(int32_t), 1, 1);
 
 
-
+VkResult vkEndCommandBuffer(
+    VkCommandBuffer                             commandBuffer);
+	    
     BAIL_ON_BAD_RESULT(vkEndCommandBuffer(commandBuffer));
 
 
