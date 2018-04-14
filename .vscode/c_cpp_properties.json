@@ -46,8 +46,8 @@
             "name": "Win32",
             "intelliSenseMode": "clang-x64",
             "includePath": [
-                "${workspaceRoot}",
-                "${workspaceRoot}/include",
+                "${workspaceFolder}",
+                "${workspaceFolder}/include",
                 "C:/tools/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/include",
                 "C:/tools/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/include-fixed",
                 "C:/tools/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/include",
@@ -63,8 +63,8 @@
             ],
             "browse": {
                 "path": [
-                    "${workspaceRoot}",
-                    "${workspaceRoot}/include",
+                    "${workspaceFolder}",
+                    "${workspaceFolder}/include",
                     "C:/tools/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/include",
                     "C:/tools/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/include-fixed",
                     "C:/tools/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/include",
